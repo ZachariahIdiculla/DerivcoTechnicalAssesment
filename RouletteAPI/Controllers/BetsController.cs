@@ -9,21 +9,21 @@ namespace RouletteAPI.Controllers{
     [Route("[controller]")]
     public class BetsController : ControllerBase{
 
-        private readonly InMemBetsRepository repository;
+        private readonly IBetsRepository repository;
 
-        public BetsController(){
-            repository = new InMemBetsRepository();
+        public BetsController(IBetsRepository repository){
+            this.repository = repository;
         }
 
         [HttpGet]
         
-        public IEnumerable<Bets> GetBets(){
+        public IEnumerable<Bet> GetBets(){
             var bets = repository.GetBets();
             return bets;
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Bets> GetBet(Guid id){
+        public ActionResult<Bet> GetBet(Guid id){
             var bet = repository.GetBet(id);
 
             if (bet is null){
