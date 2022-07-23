@@ -35,5 +35,19 @@ namespace RouletteAPI.Controllers{
             return bet.AsDto();
         }
 
+        [HttpPost]
+        public ActionResult<BetDto> CreateBet(CreateBetDto betDto){
+            Bet bet = new(){
+                Id = Guid.NewGuid(),
+                BetAmount = betDto.BetAmount,
+                BetType = betDto.BetType,
+                CreatedDate = DateTimeOffset.UtcNow
+            };
+
+            repository.CreateBet(bet);
+
+            return CreatedAtAction(nameof(GetBet), new {id = bet.Id}, bet.AsDto());
+        }
+
     }
 }

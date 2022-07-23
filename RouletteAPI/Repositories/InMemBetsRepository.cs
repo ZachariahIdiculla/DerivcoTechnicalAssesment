@@ -21,5 +21,10 @@ namespace RouletteAPI.Repositories{
         {
             return bets.Where(Bet => Bet.Id == id).SingleOrDefault();
         }
+
+        public void CreateBet(Bet bet)
+        {
+            bets.Add(bet);
+        }
     }
 }
