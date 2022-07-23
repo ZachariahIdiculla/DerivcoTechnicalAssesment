@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using RouletteAPI.Dtos;
 using RouletteAPI.Models;
 using RouletteAPI.Repositories;
 
@@ -17,20 +19,20 @@ namespace RouletteAPI.Controllers{
 
         [HttpGet]
         
-        public IEnumerable<Bet> GetBets(){
-            var bets = repository.GetBets();
+        public IEnumerable<BetDto> GetBets(){
+            var bets = repository.GetBets().Select(bet => bet.AsDto());
             return bets;
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Bet> GetBet(Guid id){
+        public ActionResult<BetDto> GetBet(Guid id){
             var bet = repository.GetBet(id);
 
             if (bet is null){
                 return NotFound();
             }
 
-            return bet;
+            return bet.AsDto();
         }
 
     }
