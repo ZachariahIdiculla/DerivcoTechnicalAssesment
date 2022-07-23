@@ -26,5 +26,11 @@ namespace RouletteAPI.Repositories{
         {
             bets.Add(bet);
         }
+
+        public void UpdateBet(Bet bet)
+        {
+            var index = bets.FindIndex(existingBet => existingBet.Id == bet.Id);
+            bets[index] = bet;
+        }
     }
 }

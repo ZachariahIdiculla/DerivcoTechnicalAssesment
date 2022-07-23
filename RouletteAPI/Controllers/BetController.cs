@@ -49,5 +49,25 @@ namespace RouletteAPI.Controllers{
             return CreatedAtAction(nameof(GetBet), new {id = bet.Id}, bet.AsDto());
         }
 
+        [HttpPut("{id}")]
+
+        public ActionResult UpdateBet(Guid id, UpdateBetDto betDto){
+            var existingBet = repository.GetBet(id);
+
+            if (existingBet is null)
+            {
+                return NotFound();
+            }
+
+            Bet updateBet = existingBet with {
+                BetAmount = betDto.BetAmount,
+                BetType = betDto.BetType
+            };
+
+            repository.UpdateBet(updateBet);
+
+            return NoContent();
+        }
+
     }
 }

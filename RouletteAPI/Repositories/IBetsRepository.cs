@@ -8,6 +8,7 @@ namespace RouletteAPI.Repositories{
         Bet GetBet(Guid id);
         IEnumerable<Bet> GetBets();
         void CreateBet(Bet bet);
+        void UpdateBet(Bet bet);
     }
 
 }
