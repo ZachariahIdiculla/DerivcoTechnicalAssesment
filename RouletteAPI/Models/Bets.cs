@@ -1,7 +1,7 @@
 using System;
 
 namespace RouletteAPI.Models{
-    public record Bet{
+    public record Bets{
         public Guid Id{get; init;}
 
         public string BetType{get; init;}
