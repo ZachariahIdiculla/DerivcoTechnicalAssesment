@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.Sqlite;
 using RouletteAPI.Dtos;
 using RouletteAPI.Models;
 using RouletteAPI.Repositories;
@@ -45,6 +46,27 @@ namespace RouletteAPI.Controllers{
             };
 
             repository.CreateBet(bet);
+
+            var connectionStringBuilder = new SqliteConnectionStringBuilder();
+
+            //Use DB in project directory.  If it does not exist, create it:
+            connectionStringBuilder.DataSource = "C:\\Users\\zacha\\source\\repos\\ZachariahIdiculla\\DerivcoTechnicalAssesment\\DerivcoTechnicalAssesment\\RouletteAPI\\RouletteDB.db";
+
+            using (var connection = new SqliteConnection(connectionStringBuilder.ConnectionString))
+            {
+                connection.Open();
+
+                //Seed some data:
+                using (var transaction = connection.BeginTransaction())
+                {
+                    var insertCmd = connection.CreateCommand();
+
+                    insertCmd.CommandText = "INSERT into Bets VALUES (\"" + bet.Id + "\",\"" + bet.BetType + "\"," + bet.BetAmount.ToString() + ")";
+                    insertCmd.ExecuteNonQuery();
+
+                    transaction.Commit();
+                }
+            }
 
             return CreatedAtAction(nameof(GetBet), new {id = bet.Id}, bet.AsDto());
         }
